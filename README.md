@@ -26,15 +26,13 @@ It is "neutronbass". **DO NOT LEAVE THIS PASSWORD LINE INTACT!**
 
 ###What is this thing?
 
-CLIP’s build system allows developers and administrators to create RPMs and LiveCDs
+CLIP’s build system allows developers and administrators to create RPMs and installation ISOs
 in a controlled environment.
 
 Specific features include:
 
 * Generation of RPMs using mock. 
 * Generation of installation media (ISOs).
-* Generation of LiveCD ISOs (currently broken for RHEL 6 due to dracut
-issues).
 
 Unique feature:
 
@@ -65,12 +63,10 @@ To view the list of available build targets run `make help`.
 Several repositories must be present for the build system to work:
 - RHEL/CentOS
 - RHEL Optional
-- Fedora Build Groups (for RHEL 5)
 
 The locations of these repos is defined in the [`CONFIG_REPOS`](./CONFIG_REPOS) file:
 -  [`rhel`](./CONFIG_REPOS#L30)` = /mnt/repos/rhel`
 -  [`opt`](./CONFIG_REPOS#L35)` = /mnt/repos/opt`
--  [`buildgroups`](./CONFIG_REPOS#L41)` = /mnt/repos/buildgroups`
 
 Remember that repositories are often architecture specific so you might have
 to update these variables to build for a different architecture.
@@ -115,7 +111,7 @@ pass in a kickstart.  This kickstart is used to generate an ISO.
 
 To add a new ISO, first add an appropriate kickstart to the
 `kickstart/<productname>` directory.  Since this build system generates and
-manages yum repos we must "muck around" with the kickstart so ensure it has
+manages yum repos we must modify with the kickstart so ensure it has
 the `#REPO-REPLACEMENT-PLACEHOLDER` line somewhere near the top.
 
 **Note**: the string `#REPO-REPLACEMENT-PLACEHOLDER` *must* appear in the
@@ -183,46 +179,8 @@ The logs from auditing and remediation are placed in `/root/ssg/` by default.
 
 **NOTE**: As of RHEL 7.0, LiveCDs are no longer functional. Please see issue #178 for more information.
 
-livecd-tools from EPEL has problems.  We have a patched version we're using.
-To generate Live Media you're going to have to install our version. Either run [`./bootstrap.sh`](./bootstrap.sh) or install manually:
-
-```
-make livecd-tools-rpm
-cd repos/clip-repo
-sudo yum remove livecd-tools python-imgcreate -y
-sudo yum localinstall livecd-tools*x86_64.rpm python-imgcreate* -y
-```
-
-We can take a live CD ISO, write it to non-optical media like a
-hard drive or USB device.  This can be done with the following make
-commands:
-
-```
-make clip-rhel7-live-iso
-```
-
-That generates the live ISO image.  Now you can write that image
-to a hard drive or USB device.
-
-```
-make iso-to-disk USB_DEV=/dev/sdb ISO_FILE=clip-rhel7-*-live.iso
-```
-
-This will generate stateless live media.  If you want to retain state
-across reboots specify an overlay size (in MB) as well:
-
-```
-make iso-to-disk USB_DEV=/dev/sdb ISO_FILE=clip-rhel7-*-live.iso OVERLAY_SIZE=256
-```
-
-If you want to retain state in the home directory across boots, specify a home
-overlay size (in MB) and an overlay size (in MB) as well:
-
-```
-make iso-to-disk USB_DEV=/dev/sdb ISO_FILE=clip-rhel7-*-live.iso OVERLAY_SIZE=256 OVERLAY_HOME=128
-```
 ## SELinux Policy <a id="selinux"></a>
-
+#FIXME
 CLIP SELinux policy for Red Hat Enterprise Linux 7 (RHEL7) aims to provide a
 certifiable SELinux policy from which users can base their own policy. The
 policy is currently in an Alpha state and only supports booting/logins in
