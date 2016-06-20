@@ -23,6 +23,7 @@
 /usr/lib/systemd/systemd-hostnamed			--		gen_context(system_u:object_r:systemd_hostnamed_exec_t,s0)
 /usr/lib/systemd/systemd-localed		--	gen_context(system_u:object_r:systemd_locale_exec_t,s0)
 /usr/lib/systemd/systemd-logind			--	gen_context(system_u:object_r:systemd_logind_exec_t,s0)
+/usr/lib/systemd/systemd-update-done			--	gen_context(system_u:object_r:systemd_update_done_exec_t,s0)
 /usr/lib/systemd/systemd-machined	--	gen_context(system_u:object_r:systemd_machined_exec_t,s0)
 /usr/lib/systemd/user-generators(/.*)?		gen_context(system_u:object_r:bin_t,s0)
 /usr/lib/systemd/user-preset(/.*)?			gen_context(system_u:object_r:systemd_unit_file_t,s0)
@@ -61,3 +62,6 @@
 /usr/lib/systemd/user(/.*)?		gen_context(system_u:object_r:systemduser_unit_file_t)
 /usr/lib/systemd/user/[^/]*emacs.*		gen_context(system_u:object_r:emacs_session_unit_file_t)
 /usr/lib/systemd/user/[^/]*obex.*		gen_context(system_u:object_r:obexd_session_unit_file_t)
+
+/etc/.updated --                         gen_context(system_u:object_r:systemd_updated_t)
+/var/.updated --                         gen_context(system_u:object_r:systemd_updated_t)
