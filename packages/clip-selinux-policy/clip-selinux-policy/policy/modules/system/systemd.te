@@ -135,6 +135,19 @@ files_var_filetrans(systemd_update_done_t, systemd_updated_t, file)
 allow systemd_update_done_t systemd_updated_t:file manage_file_perms;
 
 #
+# hwdb_update
+#
+type systemd_hwdb_t;
+type systemd_hwdb_exec_t;
+init_daemon_domain(systemd_hwdb_t, systemd_hwdb_exec_t)
+
+type systemd_hwdb_bin_t;
+files_type(systemd_hwdb_bin_t)
+files_search_etc(systemd_hwdb_t)
+files_etc_filetrans(systemd_hwdb_t, systemd_hwdb_bin_t, file)
+allow systemd_hwdb_t systemd_hwdb_bin_t:file manage_file_perms;
+
+#
 # machined
 #
 type systemd_machined_t;
